@@ -13,12 +13,26 @@ defineProps<Props>();
 </script>
 
 <template>
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 42" :class="className" v-bind="$attrs">
-        <path
-            fill="currentColor"
-            fill-rule="evenodd"
-            clip-rule="evenodd"
-            d="M17.2 5.633 8.6.855 0 5.633v26.51l16.2 9 16.2-9v-8.442l7.6-4.223V9.856l-8.6-4.777-8.6 4.777V18.3l-5.6 3.111V5.633ZM38 18.301l-5.6 3.11v-6.157l5.6-3.11V18.3Zm-1.06-7.856-5.54 3.078-5.54-3.079 5.54-3.078 5.54 3.079ZM24.8 18.3v-6.157l5.6 3.111v6.158L24.8 18.3Zm-1 1.732 5.54 3.078-13.14 7.302-5.54-3.078 13.14-7.3v-.002Zm-16.2 7.89 7.6 4.222V38.3L2 30.966V7.92l5.6 3.111v16.892ZM8.6 9.3 3.06 6.222 8.6 3.143l5.54 3.08L8.6 9.3Zm21.8 15.51-13.2 7.334V38.3l13.2-7.334v-6.156ZM9.6 11.034l5.6-3.11v14.6l-5.6 3.11v-14.6Z"
-        />
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" :class="className" v-bind="$attrs">
+        <sodipodi:namedview id="namedview1" pagecolor="#ffffff" bordercolor="#000000" borderopacity="0.25" />
+        <defs id="defs1" />
+  <g
+     inkscape:label="Слой 1" inkscape:groupmode="layer" id="layer1">
+    <rect
+       style="fill:#000000;stroke:#000000;stroke-width:0.2"
+       id="rect1" width="20" height="20" x="4.0" y="4.0" />
+    <path
+       sodipodi:type="star" style="fill:#00CC00;stroke:#00ff00;stroke-width:0.2" id="path1" inkscape:flatsided="true" sodipodi:sides="3"
+       sodipodi:cx="6.9239264" sodipodi:cy="8.0171776" sodipodi:r1="9.1104298" sodipodi:r2="4.5552149" sodipodi:arg1="0" sodipodi:arg2="1.0471976"
+       inkscape:rounded="0" inkscape:randomized="0" d="m 16.034356,8.0171776 -13.6656445,7.8898634 0,-15.77972703 z"
+       inkscape:transform-center-x="-1.6802295" transform="matrix(0.7377169,0,0,0.81963262,5.7050952,8.3699637)" />
+    <path
+       sodipodi:type="star" style="fill:#00C000;stroke:#00ff00;stroke-width:0.2" id="path1-8"
+       inkscape:flatsided="true" sodipodi:sides="3" sodipodi:cx="6.9239264" sodipodi:cy="8.0171776"
+       sodipodi:r1="9.1104298" sodipodi:r2="4.5552149" sodipodi:arg1="0" sodipodi:arg2="1.0471976"
+       inkscape:rounded="0" inkscape:randomized="0" d="m 16.034356,8.0171776 -13.6656445,7.8898634 0,-15.77972703 z"
+       inkscape:transform-center-x="0.22513469" transform="matrix(0.49577472,-0.27843962,0.34330489,0.49202917,12.770144,7.3033838)"
+       inkscape:transform-center-y="1.2683524" />
+  </g>
     </svg>
 </template>

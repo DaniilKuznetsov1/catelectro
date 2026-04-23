@@ -12,7 +12,7 @@ import { Head, Link } from '@inertiajs/vue3';
         <header class="flex flex-row not-has-[nav]:hidden mb-4 w-full text-sm">
             <div class="flex items-center justify-start w-[calc(50%-10px)]">
                 <Link :href="route('home')"
-                class="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a]"
+                class="inline-block rounded-sm border border-transparent px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a]"
                 >Главная</Link>
             </div>
             <nav class="flex items-center justify-end gap-4 w-[calc(50%-10px)]">
