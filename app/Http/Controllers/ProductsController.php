@@ -12,17 +12,34 @@ class ProductsController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index_api()
     {
         $products1 = Products::paginate(10);
         return $products1;
+    }
+
+    public function filterIndex_api(Request $request)
+    {
+        $cat_id = $request->input('cat_id');
+        $products1 = Products::where('cat_id', '=', $cat_id)->paginate(10);
+        return $products1;
+    }
+
+    public function index()
+    {
+        $products1 = Products::paginate(10);
+        return Inertia::render('viewsdata/Products', [
+            'products' => $products1
+        ]);
     }
 
     public function filterIndex(Request $request)
     {
         $cat_id = $request->input('cat_id');
         $products1 = Products::where('cat_id', '=', $cat_id)->paginate(10);
-        return $products1;
+        return Inertia::render('viewsdata/Products', [
+            'products' => $products1
+        ]);
     }
 
     /**
@@ -30,13 +47,13 @@ class ProductsController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('viewsdata/CreateProduct');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store_api(Request $request)
     {
         $product1 = new Products();
         $product1->name = $request->input('name');
@@ -51,13 +68,41 @@ class ProductsController extends Controller
         return $products1;
     }
 
+    public function store(Request $request)
+    {
+        /*$product1 = new Products();
+        $product1->name = $request->input('name');
+        $product1->description = $request->input('description');
+        $product1->photo = $request->input('photo');
+        $product1->price = $request->input('price');
+        $product1->valprice = $request->input('valprice');
+        $product1->category_id = $request->input('category_id');
+        $product1->save();
+
+        $products1 = Products::paginate(10);
+        return $products1;*/
+
+        Products::create($request->validate([
+            'name' => ['required', 'max:255'],
+            'description' => [],
+            'photo' => [],
+            'price' => ['required', 'max:50'],
+            'valprice' => ['required', 'max:3'],
+            'category_id' => [],
+        ]));
+
+        $products1 = Products::paginate(10);
+        return Inertia::render('viewsdata/Products', [
+            'products' => $products1
+        ]);
+    }
+
     /**
      * Display the specified resource.
      */
     public function show(Products $products)
     {
-        //$products1 = Products::findOrFail($id);
-        return $products;
+        //return Inertia::render('viewsdata/CreateProduct');
     }
 
     /**
@@ -65,7 +110,16 @@ class ProductsController extends Controller
      */
     public function edit(Products $products)
     {
-        return $products;
+        $product1 = Products::findOrFail($products->id);
+        return Inertia::render('viewsdata/EditProduct', [
+            'products' => $product1
+        ]);
+    }
+
+    public function edit_api($id)
+    {
+        $product1 = Products::findOrFail($id);
+        return $product1;
     }
 
     /**
@@ -73,8 +127,35 @@ class ProductsController extends Controller
      */
     public function update(Request $request, Products $products)
     {
-        $product1 = $products;
+        //$product1 = $products;
+        $product1 = Products::findOrFail($products->id);
+        $product1->name = $request->input('name');
+        $product1->description = $request->input('description');
+        $product1->photo = $request->input('photo');
+        $product1->price = $request->input('price');
+        $product1->valprice = $request->input('valprice');
+        $product1->category_id = $request->input('category_id');
+        $product1->save();
 
+        $products1 = Products::paginate(10);
+        return Inertia::render('viewsdata/Products', [
+            'products' => $products1
+        ]);
+    }
+
+    public function update_api(Request $request, $id)
+    {
+        $product1 = Products::findOrFail($id);
+        $product1->name = $request->input('name');
+        $product1->description = $request->input('description');
+        $product1->photo = $request->input('photo');
+        $product1->price = $request->input('price');
+        $product1->valprice = $request->input('valprice');
+        $product1->category_id = $request->input('category_id');
+        $product1->save();
+
+        $products1 = Products::paginate(10);
+        return $products1;
     }
 
     /**
@@ -82,6 +163,21 @@ class ProductsController extends Controller
      */
     public function destroy(Products $products)
     {
-        //
+        $product1 = Products::findOrFail($products->id);
+        $product1->delete();
+
+        $products1 = Products::paginate(10);
+        return Inertia::render('viewsdata/Products', [
+            'products' => $products1
+        ]);
+    }
+
+    public function destroy_api($id)
+    {
+        $product1 = Products::findOrFail($id);
+        $product1->delete();
+
+        $products1 = Products::paginate(10);
+        return $products1;
     }
 }
