@@ -25,7 +25,7 @@ return new class extends Migration
             Это помогает избежать проблем с JavaScript на фронтенде.
             */
             $table->foreignId('category_id')->comment('Категория товара');
-            $table->timestamps()->comment('created_at, updated_at, deleted_at');
+            $table->timestamps();
             $table->softDeletes('deleted_at', precision: 0);
         });
     }
