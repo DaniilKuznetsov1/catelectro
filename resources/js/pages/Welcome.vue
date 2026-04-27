@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
+import Products from '@/pages/viewsdata/Products.vue';
 
 </script>
 
@@ -40,8 +41,9 @@ import { Head, Link } from '@inertiajs/vue3';
             </nav>
         </header>
         <div class="duration-750 starting:opacity-0 flex w-full justify-center opacity-100 transition-opacity lg:grow">
-            <main class="flex w-full flex-col-reverse overflow-hidden rounded-lg lg:flex-row">
-                Стартовая страница
+            <main class="w-full overflow-hidden rounded-lg">
+                <!-- Стартовая страница -->
+                <products ></products>
             </main>
         </div>
         <div class="h-14.5 hidden lg:block"></div>

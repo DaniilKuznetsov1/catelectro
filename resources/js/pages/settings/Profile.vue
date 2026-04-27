@@ -22,7 +22,7 @@ defineProps<Props>();
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Profile settings',
+        title: 'Настройки профиля',
         href: '/settings/profile',
     },
 ];

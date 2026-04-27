@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Products;
+use App\Models\Categorys;
+
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -50,19 +52,40 @@ class ProductsController extends Controller
         return Inertia::render('viewsdata/CreateProduct');
     }
 
+    public function testReqCreate(Request $request) 
+    {
+        $ret = 0;
+
+        if (mb_strlen($request->input('name')) > 0) {
+            $ret = $ret + 1;
+        }
+        if (mb_strlen($request->input('price')) > 0) {
+            $ret = $ret + 1;
+        }
+        $categorys1 = Categorys::find($request->input('category_id'))->get();
+        if (is_null($categorys1) == false) {
+            $ret = $ret + 1;
+        }
+
+        return $ret;
+    }
+
     /**
      * Store a newly created resource in storage.
      */
     public function store_api(Request $request)
     {
-        $product1 = new Products();
-        $product1->name = $request->input('name');
-        $product1->description = $request->input('description');
-        $product1->photo = $request->input('photo');
-        $product1->price = $request->input('price');
-        $product1->valprice = $request->input('valprice');
-        $product1->category_id = $request->input('category_id');
-        $product1->save();
+        $ret = $this->testReqCreate($request);
+        if ($ret == 3) {
+            $product1 = new Products();
+            $product1->name = $request->input('name');
+            $product1->description = $request->input('description');
+            $product1->photo = $request->input('photo');
+            $product1->price = $request->input('price');
+            $product1->valprice = $request->input('valprice');
+            $product1->category_id = $request->input('category_id');
+            $product1->save();
+        }
 
         $products1 = Products::paginate(10);
         return $products1;
@@ -127,15 +150,17 @@ class ProductsController extends Controller
      */
     public function update(Request $request, Products $products)
     {
-        //$product1 = $products;
-        $product1 = Products::findOrFail($products->id);
-        $product1->name = $request->input('name');
-        $product1->description = $request->input('description');
-        $product1->photo = $request->input('photo');
-        $product1->price = $request->input('price');
-        $product1->valprice = $request->input('valprice');
-        $product1->category_id = $request->input('category_id');
-        $product1->save();
+        $ret = $this->testReqCreate($request);
+        if ($ret == 3) {
+            $product1 = Products::findOrFail($products->id);
+            $product1->name = $request->input('name');
+            $product1->description = $request->input('description');
+            $product1->photo = $request->input('photo');
+            $product1->price = $request->input('price');
+            $product1->valprice = $request->input('valprice');
+            $product1->category_id = $request->input('category_id');
+            $product1->save();
+        }
 
         $products1 = Products::paginate(10);
         return Inertia::render('viewsdata/Products', [
@@ -145,15 +170,17 @@ class ProductsController extends Controller
 
     public function update_api(Request $request, $id)
     {
-        $product1 = Products::findOrFail($id);
-        $product1->name = $request->input('name');
-        $product1->description = $request->input('description');
-        $product1->photo = $request->input('photo');
-        $product1->price = $request->input('price');
-        $product1->valprice = $request->input('valprice');
-        $product1->category_id = $request->input('category_id');
-        $product1->save();
-
+        $ret = $this->testReqCreate($request);
+        if ($ret == 3) {
+            $product1 = Products::findOrFail($id);
+            $product1->name = $request->input('name');
+            $product1->description = $request->input('description');
+            $product1->photo = $request->input('photo');
+            $product1->price = $request->input('price');
+            $product1->valprice = $request->input('valprice');
+            $product1->category_id = $request->input('category_id');
+            $product1->save();
+        }
         $products1 = Products::paginate(10);
         return $products1;
     }
