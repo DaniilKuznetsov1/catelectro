@@ -43,7 +43,7 @@ import Products from '@/pages/viewsdata/Products.vue';
         <div class="duration-750 starting:opacity-0 flex w-full justify-center opacity-100 transition-opacity lg:grow">
             <main class="w-full overflow-hidden rounded-lg">
                 <!-- Стартовая страница -->
-                <products ></products>
+                <products stradmin="false"></products>
             </main>
         </div>
         <div class="h-14.5 hidden lg:block"></div>

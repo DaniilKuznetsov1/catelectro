@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('categorys', function (Blueprint $table) {
             $table->id('cat_id');
-            $table->string('name', 255)->comment('Имя - название категории');
-            $table->text('description')->comment('Описание категории');
+            $table->string('catname', 255)->comment('Имя - название категории');
+            $table->text('catdescription')->comment('Описание категории');
             $table->timestamps();
             $table->softDeletes('deleted_at', precision: 0);
         });

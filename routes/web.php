@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\CategorysController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -13,3 +15,12 @@ Route::get('dashboard', function () {
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
+require __DIR__.'/api.php';
+
+Route::resource('products', ProductsController::class)->only([
+    'index', 'filterIndex', 'create', 'store', 'edit', 'update', 'destroy'
+]);
+
+Route::resource('categorys', CategorysController::class)->only([
+    'create', 'store', 'edit', 'update', 'destroy'
+]);

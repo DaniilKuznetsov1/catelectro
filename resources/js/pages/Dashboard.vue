@@ -3,6 +3,8 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/vue3';
 import PlaceholderPattern from '../components/PlaceholderPattern.vue';
+import Products from '@/pages/viewsdata/Products.vue';
+import Categories from '@/pages/viewsdata/Categories.vue';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -20,7 +22,8 @@ defineProps<{
     <Head title="Администрирование" />
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
-            
+            <categories ></categories>
+            <products stradmin="true"></products>
         </div>
     </AppLayout>
 </template>
