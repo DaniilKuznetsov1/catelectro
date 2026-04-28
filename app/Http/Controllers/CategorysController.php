@@ -56,10 +56,12 @@ class CategorysController extends Controller
             'catdescription' => [],
         ]));
 
-        $categorys1 = Categorys::get();
-        return Inertia::render('viewsdata/Categories', [
+        //$categorys1 = Categorys::get();
+        /*return Inertia::render('viewsdata/Categories', [
             'categorys' => $categorys1
-        ]);
+        ]);*/
+        //return $categorys1;
+        return Inertia::render('Dashboard');
     }
 
     /**
@@ -97,8 +99,9 @@ class CategorysController extends Controller
         $categorys1->description = $request->input('catdescription');
         $categorys1->save();
 
-        $categorys1 = Categorys::get();
-        return $categorys1;
+        //$categorys1 = Categorys::get();
+        //return $categorys1;
+        return Inertia::render('Dashboard');
     }
 
     public function update_api(Request $request, $id)

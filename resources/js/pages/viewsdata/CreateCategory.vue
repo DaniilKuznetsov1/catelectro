@@ -11,17 +11,24 @@ defineProps<{
     status?: string;
 }>();
 
+const emit = defineEmits<{
+  (e:'resdatacreatecat', succesdata:any):void;
+}>();
+
 const form = useForm({
     catname: '',
     catdescription: '',
 });
 
 const submit = () => {
-    form.post(route('/categorys/store'), {
+    form.post(route('categorys.store'), { //  /categorys/store
         onFinish: () => {
           form.reset('catname');
           form.reset('catdescription');
         },
+        onSuccess: (page) => {
+          $emit('resdatacreatecat', page.props.success_data); 
+        }
     });
 };
 
@@ -29,7 +36,7 @@ const submit = () => {
 
 <template>
   <div class="w-full">
-
+    <h2>Создать категорию</h2>
     <form @submit.prevent="submit" class="flex flex-col gap-6">
       <div class="grid gap-6">
         <div class="grid gap-2">

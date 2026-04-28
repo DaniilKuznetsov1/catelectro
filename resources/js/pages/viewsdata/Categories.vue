@@ -3,6 +3,7 @@ import { getURLPopEnd } from '@/lib/utils';
 import { Head } from '@inertiajs/vue3';
 import { ref, onMounted } from 'vue';
 import CreateCategory from '@/pages/viewsdata/CreateCategory.vue';
+import EditCategory from '@/pages/viewsdata/EditCategory.vue';
 
 const props = defineProps<{
     status?: string;
@@ -19,7 +20,7 @@ async function getCategories() {
     let csrf = window.document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
   try {
-    const response = await fetch(str+'/categorysa', {
+    const response = await fetch(str+'/categorysapi', {
             headers: { "Content-Type": "application/json", 'X-CSRF-TOKEN':  csrf},
             credentials: "include",
           });
@@ -28,7 +29,8 @@ async function getCategories() {
     }
     
     const data = await response.json();
-    console.log("categoryes: "+data);
+    console.log("categoryes: ");
+    console.log(data);
     categories.value = data;
 
   } catch (error) {
@@ -53,9 +55,21 @@ function toogleVisEdit(id) {
   if (visEdit.value == 0) {
     visEdit.value = 1;
     obj = categories.value[id];
+    currentCategory.value.cat_id = id;
+    currentCategory.value.catname = obj.catname;
+    currentCategory.value.catdescription = obj.catdescription;
   } else {
     visEdit.value = 0;
   }
+}
+
+function createok(event) {
+  visCreate.value = 0;
+
+}
+
+function editok(event) {
+  visEdit.value = 0;
 }
 
 </script>
@@ -72,17 +86,20 @@ function toogleVisEdit(id) {
     <tr>
       <th class="border-2 border-black">Название категории</th> <th class="border-2 border-black">Описание категории</th> <th class="border-2 border-black">Операции</th>
     </tr>
-    <tr>
-      <td class="border-2 border-black"></td> <td class="border-2 border-black"></td> 
-      <td class="border-2 border-black"><button class="rounded-sm border-2 border-black" @click="toogleVisEdit(0)"> /ред </button></td>
+    <tr v-for="category in categories">
+      <td class="border-2 border-black">{{ category.catname }}</td> <td class="border-2 border-black">{{ category.catdescription }}</td> 
+      <td class="border-2 border-black"><button class="rounded-sm border-2 border-black min-w-[20px]" @click="toogleVisEdit(category.cat_id)"> /ред </button></td>
     </tr>
   </table>
   </div>
   <div class="border-2 flex flex-row mb-4 w-full text-sm">
     <span class="flex items-center justify-start w-[calc(50%-5px)]">
-      <button class="rounded-sm border-2 border-black" @click="toogleVisCreate"> + </button> </span>
-    <span class="flex items-center justify-center w-[calc(50%-5px)]" v-if="visCreate == 1"><create-category ></create-category></span>
-    <span class="flex items-center justify-center w-[calc(50%-5px)]" v-if="visEdit == 1">EditCategory</span>
+      <button class="rounded-sm border-2 border-black min-w-[20px]" @click="toogleVisCreate"> + </button> </span>
+    <span class="flex items-center justify-center w-[calc(50%-5px)]" v-if="visCreate == 1">
+      <create-category @resdatacreatecat="createok"></create-category></span>
+    <span class="flex items-center justify-center w-[calc(50%-5px)]" v-if="visEdit == 1">
+      <edit-category :cat_id="currentCategory.cat_id" :catname="currentCategory.catname" :catdescription="currentCategory.catdescription" 
+      @resdataeditcat="editok"></edit-category></span>
     <span class="flex items-center justify-center w-[calc(50%-5px)]" v-if="visCreate == 0 && visEdit == 0">000</span>
   </div>
 </template>
