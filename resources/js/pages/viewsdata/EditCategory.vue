@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Head, useForm } from '@inertiajs/vue3';
+import { Head, useForm, defineEmits } from '@inertiajs/vue3';
 import { ref, onMounted, watch } from 'vue';
 import { Button } from '@/components/ui/button';
 import InputError from '@/components/InputError.vue';
@@ -7,10 +7,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { LoaderCircle } from 'lucide-vue-next';
 
-defineProps<{
-    cat_id?:number;
-    catname?:string;
-    catdescription?:string;
+const props = defineProps<{
+    category?:object;
+    visible?:boolean;
 }>();
 
 const emit = defineEmits<{
@@ -25,18 +24,32 @@ const form = useForm({
     catdescription: '',
 });
 
-watch(() => props.cat_id, (newVal) => {form.cat_id = newVal});
-watch(() => props.catname, (newVal) => {form.catname = newVal});
-watch(() => props.catdescription, (newVal) => {form.catdescription = newVal});
+/* watch(()=> props.visible, (newVal) => {
+  console1.log('watch1');
+  console1.log(newVal);
+}); */
+
+watch(() => props.category, (newVal) => {
+  if (newVal) {
+    form.cat_id = newVal.cat_id;
+    form.catname = newVal.catname;
+    form.catdescription = newVal.catdescription;
+    console.log(form);
+  }
+}, {deep: true});
 
 const submit = () => {
-    form.put(route('categorys.update', {cat_id: form.cat_id, catname: form.catname, catdescription: form.catdescription}), { //  /categorys/update
+    //let category1:object = {cat_id: form.cat_id, catname: form.catname, catdescription: form.catdescription};
+    //form.append('_method', 'PUT');
+    console.log(form.cat_id);
+    form.put(route('categorys.update', {category: form.cat_id}), { //  /categorys/update
+        forceFormData: true,
         onFinish: () => {
           form.reset('catname');
           form.reset('catdescription');
         },
         onSuccess: (page) => {
-          $emit('resdataeditcat', page.props.success_data); 
+          emit('resdataeditcat', page.props.activeremount); 
         }
     });
 };

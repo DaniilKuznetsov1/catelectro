@@ -22,5 +22,7 @@ Route::resource('products', ProductsController::class)->only([
 ]);
 
 Route::resource('categorys', CategorysController::class)->only([
-    'create', 'store', 'edit', 'update', 'destroy'
+    'create', 'store', 'edit', 'destroy' //'update', 
 ]);
+
+Route::put('/categorys/update/{category}', [CategorysController::class, 'update'])->name('categorys.update');

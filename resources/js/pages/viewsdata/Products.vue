@@ -28,8 +28,6 @@ async function getCategories() {
     }
     
     const data = await response.json();
-    console.log("prod categoryes: ");
-    console.log(data);
     categories.value = data;
 
   } catch (error) {
@@ -52,8 +50,6 @@ async function getProducts() {
     const data = await response.json();
     //console.log(data);
     products.value = data;
-    console.log('getProducts');
-    console.log(data);
 
   } catch (error) {
     console.error('Сетевая ошибка:', error);

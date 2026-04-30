@@ -115,9 +115,10 @@ class ProductsController extends Controller
         ]));
 
         $products1 = Products::paginate(10);
-        return Inertia::render('viewsdata/Products', [
+        /* return Inertia::render('viewsdata/Products', [
             'products' => $products1
-        ]);
+        ]); */
+        return Inertia::render('Dashboard');
     }
 
     /**
@@ -162,10 +163,8 @@ class ProductsController extends Controller
             $product1->save();
         }
 
-        $products1 = Products::paginate(10);
-        return Inertia::render('viewsdata/Products', [
-            'products' => $products1
-        ]);
+        //$products1 = Products::paginate(10);
+        return Inertia::render('Dashboard');
     }
 
     public function update_api(Request $request, $id)
@@ -193,10 +192,7 @@ class ProductsController extends Controller
         $product1 = Products::findOrFail($products->id);
         $product1->delete();
 
-        $products1 = Products::paginate(10);
-        return Inertia::render('viewsdata/Products', [
-            'products' => $products1
-        ]);
+        return Inertia::render('Dashboard');
     }
 
     public function destroy_api($id)

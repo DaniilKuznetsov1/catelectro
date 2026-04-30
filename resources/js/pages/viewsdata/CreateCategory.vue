@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, defineEmits } from 'vue';
 import { Head, useForm } from '@inertiajs/vue3';
 import { Button } from '@/components/ui/button';
 import InputError from '@/components/InputError.vue';
@@ -27,7 +27,7 @@ const submit = () => {
           form.reset('catdescription');
         },
         onSuccess: (page) => {
-          $emit('resdatacreatecat', page.props.success_data); 
+          emit('resdatacreatecat', page.props.activeremount); 
         }
     });
 };
