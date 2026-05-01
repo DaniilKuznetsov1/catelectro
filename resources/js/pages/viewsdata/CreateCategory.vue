@@ -41,13 +41,13 @@ const submit = () => {
       <div class="grid gap-6">
         <div class="grid gap-2">
           <Label for="catname">Название категории</Label>
-          <Input id="catname" type="text" required autofocus tabindex="1"  autocomplete="email" v-model="form.catname" placeholder="" />
+          <Input id="catname" type="text" required autofocus tabindex="1"  autocomplete="" v-model="form.catname" placeholder="" />
           <InputError :message="form.errors.catname" />
         </div>
 
         <div class="grid gap-2">
           <Label for="catdescription">Описание категории</Label>
-          <Input id="catdescription" type="text" required autofocus tabindex="1"  autocomplete="email" v-model="form.catdescription" placeholder="" />
+          <Input id="catdescription" type="text" required autofocus tabindex="1"  autocomplete="" v-model="form.catdescription" placeholder="" />
           <InputError :message="form.errors.catdescription" />
         </div>
 

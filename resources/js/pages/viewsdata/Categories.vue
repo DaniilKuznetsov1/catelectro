@@ -150,6 +150,6 @@ function testUrl2() {
       <create-category @resdatacreatecat="createok"></create-category></span>
     <span class="flex items-center justify-center w-[calc(50%-5px)]" v-show="visEdit == 1">
       <edit-category :category="currentCategory" :visible="visEdit == 1"  @resdataeditcat="editok"></edit-category></span>
-    <span class="flex items-center justify-center w-[calc(50%-5px)]" v-show="visCreate == 0 && visEdit == 0">000</span>
+    <span class="flex items-center justify-center w-[calc(50%-5px)]" v-show="visCreate == 0 && visEdit == 0">&nbsp;</span>
   </div>
 </template>

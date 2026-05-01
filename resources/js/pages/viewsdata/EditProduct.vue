@@ -8,7 +8,7 @@ defineProps<{
 </script>
 
 <template>
-  <div class="">
-    
+  <div class="w-full">
+    <h2>Редактировать товар</h2>
   </div>
 </template>
