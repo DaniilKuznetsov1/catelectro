@@ -4,7 +4,7 @@ use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\CategorysController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/productsa', [ProductsController::class, 'index_api']);
+Route::get('/productsapi', [ProductsController::class, 'index_api']);
 Route::get('/productsaf', [ProductsController::class, 'filterIndex_api']);
 Route::post('/productsa', [ProductsController::class, 'store_api'])->middleware(['auth', 'verified']);
 Route::get('/productsa/{id}/edit', [ProductsController::class, 'edit_api'])->middleware(['auth', 'verified']);

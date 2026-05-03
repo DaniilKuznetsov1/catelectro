@@ -9,6 +9,11 @@ import { LoaderCircle } from 'lucide-vue-next';
 defineProps<{
     status?: string;
     categories?:object;
+    activeremount?: string;
+}>();
+
+const emit = defineEmits<{
+  (e:'resdatacreatetov', succesdata:any):void;
 }>();
 
 const currentCategory = ref({cat_id: 0, catname: '', catdescription: ''});
@@ -22,15 +27,22 @@ const form = useForm({
     photo: null,
     price: 0,
     valprice: 'Р',
-    cat_id: 0
+    category_id: 0
 });
 
-function fileUpload(event:any) {
+const toBase64 = file => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+});
+
+async function fileUpload(event:any) {
   const files = event.target.files;
   if (files.length === 0) return;
   file.value = files[0];
   imageUrl.value = URL.createObjectURL(file.value);
-  form.photo = URL.createObjectURL(file.value);
+  form.photo = await toBase64(file.value);
 }
 
 function fileRemove() {
@@ -41,8 +53,15 @@ function fileRemove() {
 }
 
 const submit = () => {
-  form.post(route('categorys.store'), {
-
+  form.post(route('products.store'), {
+    onFinish: () => {
+      form.reset('name');
+      form.reset('description');
+      fileRemove();
+    },
+    onSuccess: (page) => {
+      emit('resdatacreatetov', page.props.activeremount); 
+    }
   });
 }
 
@@ -59,11 +78,11 @@ const submit = () => {
         </div>
         <div class="grid gap-2">
           <Label for="description">Описание товара</Label>
-          <Input id="description" type="text" required autofocus tabindex="1"  autocomplete="" v-model="form.description" placeholder="" />
+          <textarea id="description" required tabindex="1" v-model="form.description" class="w-full border-2 border-gray" rows="4"></textarea>
         </div>
         <div class="grid gap-2">
           <Label for="catname">Категория товара</Label>
-          <select class="w-full" id="catname" v-model="form.cat_id" >
+          <select class="w-full" id="catname" v-model="form.category_id" >
             <option v-for="category in $props.categories" :value="category.cat_id" :key="category.cat_id">{{ category.catname }}</option>
           </select>
         </div>
@@ -76,9 +95,9 @@ const submit = () => {
           </div>
         </div>
         <div class="flex">
-          <Label for="price">Стоимость товара</Label>
-          <Input id="price" type="number" class="w-[calc(70%-15px)]" required autofocus tabindex="1"  autocomplete="" v-model="form.price" placeholder="" />
-          <Input id="valprice" type="text" class="w-[calc(30%-15px)]" required autofocus tabindex="1"  autocomplete="" v-model="form.valprice" placeholder="" />
+          <Label for="price" class="w-[calc(20%-5px)]">Стоимость товара</Label>
+          <Input id="price" type="number" class="w-[calc(60%+5px)]" required autofocus tabindex="1"  autocomplete="" v-model="form.price" placeholder="" />
+          <Input id="valprice" type="text" class="w-[calc(20%-5px)]" required autofocus tabindex="1"  autocomplete="" v-model="form.valprice" placeholder="" />
         </div>
         <Button type="submit" class="mt-4 w-full" tabindex="4" :disabled="form.processing">
           <LoaderCircle v-if="form.processing" class="h-4 w-4 animate-spin" />Записать товар

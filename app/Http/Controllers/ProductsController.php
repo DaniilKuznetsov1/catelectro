@@ -6,6 +6,7 @@ use App\Models\Products;
 use App\Models\Categorys;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -16,15 +17,16 @@ class ProductsController extends Controller
      */
     public function index_api()
     {
-        $products1 = Products::paginate(10);
+        $products1 = Products::select('id','name','description','price','valprice','category_id')->get();//paginate(10);
+        //echo(var_dump($products1));
         return $products1;
     }
 
     public function filterIndex_api(Request $request)
     {
         $cat_id = $request->input('cat_id');
-        $products1 = Products::where('cat_id', '=', $cat_id)->paginate(10);
-        return $products1;
+        $products1 = Products::where('cat_id', '=', $cat_id)->select('id','name','description','price','valprice','category_id')->get();//->paginate(10);
+        return $products1->all();
     }
 
     public function index()
@@ -80,15 +82,16 @@ class ProductsController extends Controller
             $product1 = new Products();
             $product1->name = $request->input('name');
             $product1->description = $request->input('description');
-            $product1->photo = $request->input('photo');
+            $product1->photo = $request->file('photo');
+            //$product1->photo = $request->input('photo');
             $product1->price = $request->input('price');
             $product1->valprice = $request->input('valprice');
             $product1->category_id = $request->input('category_id');
             $product1->save();
         }
 
-        $products1 = Products::paginate(10);
-        return $products1;
+        $products1 = Products::get();
+        return $products1->all();
     }
 
     public function store(Request $request)
@@ -96,7 +99,7 @@ class ProductsController extends Controller
         /*$product1 = new Products();
         $product1->name = $request->input('name');
         $product1->description = $request->input('description');
-        $product1->photo = $request->input('photo');
+        $product1->photo = $request->file('photo');
         $product1->price = $request->input('price');
         $product1->valprice = $request->input('valprice');
         $product1->category_id = $request->input('category_id');
@@ -180,8 +183,8 @@ class ProductsController extends Controller
             $product1->category_id = $request->input('category_id');
             $product1->save();
         }
-        $products1 = Products::paginate(10);
-        return $products1;
+        $products1 = Products::get();
+        return $products1->all();
     }
 
     /**
@@ -200,7 +203,7 @@ class ProductsController extends Controller
         $product1 = Products::findOrFail($id);
         $product1->delete();
 
-        $products1 = Products::paginate(10);
-        return $products1;
+        $products1 = Products::get();
+        return $products1->all();
     }
 }

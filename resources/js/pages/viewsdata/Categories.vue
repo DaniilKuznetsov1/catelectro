@@ -143,7 +143,7 @@ function testUrl2() {
   </div>
   <div class="border-2 flex flex-row mb-4 w-full text-sm">
     <span class="flex items-center justify-start w-[calc(50%-5px)]">
-      <button class="rounded-sm border-2 border-black min-w-[30px]" @click="toogleVisCreate"> + </button> 
+      <button class="rounded-sm border-2 border-black min-w-[30px]" @click="toogleVisCreate" title="Добавить категорию"> + </button> 
       <!-- <button class="rounded-sm border-2 border-black min-w-[30px]" @click="testUrl2">TU</button> -->
     </span>
     <span class="flex items-center justify-center w-[calc(50%-5px)]" v-show="visCreate == 1">

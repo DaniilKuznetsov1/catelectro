@@ -9,6 +9,7 @@ import { LoaderCircle } from 'lucide-vue-next';
 
 defineProps<{
     status?: string;
+    activeremount?: string;
 }>();
 
 const emit = defineEmits<{
