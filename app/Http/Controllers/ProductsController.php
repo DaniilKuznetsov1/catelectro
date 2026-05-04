@@ -18,17 +18,21 @@ class ProductsController extends Controller
     public function index_api()
     {
         $products1 = Products::get();//paginate(10);
+
         return $products1;
     }
 
     public function filterIndex_api(Request $request)
     {
         $cat_id = $request->input('cat_id');
+        $pageno = $request->input('page');
+        
         if ($cat_id == null || $cat_id == 1) {
-            $products1 = Products::get();
+            $products1 = Products::orderBy('id')->paginate(10)->toJson();
         } else {
-            $products1 = Products::where('category_id', '=', $cat_id)->get();//->paginate(10);
+            $products1 = Products::where('category_id', '=', $cat_id)->orderBy('id')->paginate(10)->toJson();//->paginate(10);
         }
+       
         return $products1;
     }
 

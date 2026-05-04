@@ -13,6 +13,9 @@ const props = defineProps<{
 const categories = ref([]);
 const products = ref([]);
 const currentCatId = ref(1);
+const page_no = ref(1);
+const links = ref([]);
+
 const currentCategory = ref({cat_id: 0, catname: '', catdescription: ''});
 const currentProduct = ref({name: '', description: '', photo: '', price: 0, valprice:'р', category_id: 0});
 
@@ -26,8 +29,8 @@ function runTovarTable() {
   let crow = Math.trunc(countArr / ccol); //Определяем число строк
   let crow1 = countArr % ccol;  //число столбцов в доп строке + 1. Если 0 - доп строки нет
   tovarTable.value = [];
-  console.log('runTovarTable');
-  console.table({countArr: countArr, crow: crow, crow1: crow1});
+  //console.log('runTovarTable');
+  //console.table({countArr: countArr, crow: crow, crow1: crow1});
   let i = 0;
   //for (let i=0; i<countArr; i++) {
     for (let row=0; row<crow; row++) {
@@ -51,7 +54,7 @@ function runTovarTable() {
       tovarTable.value.push(row1.slice());
     } //crow1
   //} //for let i
-  console.log(tovarTable);
+  //console.log(tovarTable);
 }
 
 async function getCategories() {
@@ -79,7 +82,7 @@ async function getProducts() {
     let str = getURLPopEnd(window.document.location.href);
     let csrf = window.document.querySelector('meta[name="csrf-token"]').getAttribute('content');
   try {
-    const response = await fetch(str+'/productsaf?cat_id='+currentCatId.value, {
+    const response = await fetch(str+'/productsaf?cat_id='+currentCatId.value+"&page="+page_no.value, {
             headers: { "Content-Type": "application/json", 'X-CSRF-TOKEN':  csrf},
             credentials: "include",
           });
@@ -88,7 +91,58 @@ async function getProducts() {
     }
     const data = await response.json();
     //console.log(data);
-    products.value = data;
+    console.log(data);
+    products.value = data.data;
+    links.value = data.links;
+    
+    runTovarTable();
+  } catch (error) {
+    console.error('Сетевая ошибка:', error);
+  }
+}
+
+function addUrlCategory(surl?:string) {
+  if (surl === null) {
+    return null;
+  } else {
+    return surl+"&cat_id="+currentCatId.value;
+  }
+}
+
+function changeCaption(caption) {
+  if (caption == "pagination.previous") {
+    return "<--"
+  } else if (caption == "pagination.next") {
+    return "-->"
+  } else {
+    return caption
+  }
+}
+
+function getDisabledActive(url) {
+  if (url == null) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+async function getProductsFromUrl(surl?:string) {
+    let csrf = window.document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+  try {
+    const response = await fetch(addUrlCategory(surl), {
+            headers: { "Content-Type": "application/json", 'X-CSRF-TOKEN':  csrf},
+            credentials: "include",
+          });
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    //console.log(data);
+    console.log(data);
+    products.value = data.data;
+    links.value = data.links;
+    
     runTovarTable();
   } catch (error) {
     console.error('Сетевая ошибка:', error);
@@ -146,13 +200,6 @@ function editok(event: any) {
       <col style="width: 20%">
       <col style="width: 20%">
     </colgroup>
-    <tr >
-      <td class="border-2 border-black">1 </td>
-      <td class="border-2 border-black">2 </td>
-      <td class="border-2 border-black">3 </td>
-      <td class="border-2 border-black">4 </td>
-      <td class="border-2 border-black">5 </td>
-    </tr>
     <tr v-for="(tovarRow, indexrow) in tovarTable" key="indexrow" style="height: 100%;">
       <td class="border-2 border-black" v-for="(tovar, indexcol) in tovarRow" key="indexcol" style="padding: 0; margin: 0; vertical-align: top;">
         <div class="flex flex-col justify-start h-full w-100 items-center">
@@ -170,13 +217,17 @@ function editok(event: any) {
           </span>
           <span v-show="props.stradmin == true">
             <button class="rounded-sm border-2 border-black min-w-[30px]" @click="toogleVisEdit(category.cat_id)"> /ред </button>
-          <button class="rounded-sm border-2 border-black min-w-[30px]" @click="catDelete(category.cat_id)"> /del </button>
+            <button class="rounded-sm border-2 border-black min-w-[30px]" @click="catDelete(category.cat_id)"> /del </button>
           </span>
         </div>
       </td> 
     </tr>
     </table>
   </div>
+  <div class="border-2 flex flex-row w-full items-center justify-center">
+      <button v-for="(link, indlink) in links" :key="indlink" @click="getProductsFromUrl(link.url)" 
+      class="rounded-sm border-2 border-black min-w-[30px]" :disabled="getDisabledActive(link.url)">{{ changeCaption(link.label) }}</button>
+    </div>
   <div class="border-2 flex flex-row mb-4 w-full text-sm">
     <span class="flex items-center justify-start w-[calc(50%-5px)]">
       <button class="rounded-sm border-2 border-black min-w-[30px]" @click="toogleVisCreate" title="Добавить товар"> + </button> 
