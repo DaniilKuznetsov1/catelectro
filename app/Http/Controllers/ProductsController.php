@@ -17,7 +17,7 @@ class ProductsController extends Controller
      */
     public function index_api()
     {
-        $products1 = Products::select('id','name','description','price','valprice','category_id')->get();//paginate(10);
+        $products1 = Products::select('id','name','description','photo','price','valprice','category_id')->get();//paginate(10);
         //echo(var_dump($products1));
         return $products1;
     }
@@ -25,7 +25,7 @@ class ProductsController extends Controller
     public function filterIndex_api(Request $request)
     {
         $cat_id = $request->input('cat_id');
-        $products1 = Products::where('cat_id', '=', $cat_id)->select('id','name','description','price','valprice','category_id')->get();//->paginate(10);
+        $products1 = Products::where('cat_id', '=', $cat_id)->select('id','name','description','photo','price','valprice','category_id')->get();//->paginate(10);
         return $products1->all();
     }
 

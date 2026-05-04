@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name', 255)->comment('Имя - название товара');
             $table->text('description')->comment('Описание товара');
-            $table->binary('photo')->comment('Фотография');
+            $table->longText('photo')->comment('Фотография в base64');
             $table->string('price', 50)->comment('Цена в виде строки с разделителем целой и дробной части .');
             $table->string('valprice', 3)->comment('Строковое наименование валюты');
             /* 

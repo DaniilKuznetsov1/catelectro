@@ -155,14 +155,14 @@ function editok(event: any) {
     <tr v-for="(tovarRow, indexrow) in tovarTable" key="indexrow">
       <td class="border-2 border-black" v-for="(tovar, indexcol) in tovarRow" key="indexcol">
         <div class="flex w-100 flex-col justify-center items-center">
-          <span class="w-100">
+          <span class="w-100 bg-sky-300">
             {{ tovar.name }}
           </span>
           <span class="w-100">
-            Photo
+            <img style="width: 100%; height: auto;" :src="tovar.photo" />
           </span>
-          <span :title="tovar.description" class="w-100">
-            (!)
+          <span :title="tovar.description" class="w-100" style="cursor:pointer">
+            Описание (!)
           </span>
           <span class="w-100">
             {{ tovar.price }} {{ tovar.valprice }}
