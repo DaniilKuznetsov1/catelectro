@@ -25,6 +25,7 @@ function runTovarTable() {
   let ccol = 5; 
   let crow = Math.trunc(countArr / ccol); //Определяем число строк
   let crow1 = countArr % ccol;  //число столбцов в доп строке + 1. Если 0 - доп строки нет
+  tovarTable.value = [];
   console.log('runTovarTable');
   console.table({countArr: countArr, crow: crow, crow1: crow1});
   let i = 0;
@@ -78,7 +79,7 @@ async function getProducts() {
     let str = getURLPopEnd(window.document.location.href);
     let csrf = window.document.querySelector('meta[name="csrf-token"]').getAttribute('content');
   try {
-    const response = await fetch(str+'/productsapi', {
+    const response = await fetch(str+'/productsaf?cat_id='+currentCatId.value, {
             headers: { "Content-Type": "application/json", 'X-CSRF-TOKEN':  csrf},
             credentials: "include",
           });
@@ -129,14 +130,14 @@ function editok(event: any) {
   <div class="border-2 flex flex-row w-full text-sm">
     <span class="flex items-center justify-start w-[calc(30%-5px)]">Фильтр по категориям</span>
     <span class="flex items-center justify-center w-[calc(50%-5px)]">
-      <select class="w-full" v-model="currentCatId" >
+      <select class="w-full" v-model="currentCatId" @change="getProducts()" >
         <option v-for="category in categories" :value="category.cat_id" :key="category.cat_id">{{ category.catname }}</option>
       </select>
     </span>
     <span class="flex items-center justify-center w-[calc(20%-5px)]">&nbsp;</span>
   </div>
   <div class="border-2 flex flex-row mb-4 w-full text-sm">
-    <table class="border-1 border-black border-collapse w-full">
+    <table class="border-1 border-black border-collapse w-full" style="height: fit-content;">
       <caption class="text-base">Товары</caption>
     <colgroup>
       <col style="width: 20%">
@@ -152,13 +153,13 @@ function editok(event: any) {
       <td class="border-2 border-black">4 </td>
       <td class="border-2 border-black">5 </td>
     </tr>
-    <tr v-for="(tovarRow, indexrow) in tovarTable" key="indexrow">
-      <td class="border-2 border-black" v-for="(tovar, indexcol) in tovarRow" key="indexcol">
-        <div class="flex w-100 flex-col justify-center items-center">
+    <tr v-for="(tovarRow, indexrow) in tovarTable" key="indexrow" style="height: 100%;">
+      <td class="border-2 border-black" v-for="(tovar, indexcol) in tovarRow" key="indexcol" style="padding: 0; margin: 0; vertical-align: top;">
+        <div class="flex flex-col justify-start h-full w-100 items-center">
           <span class="w-100 bg-sky-300">
             {{ tovar.name }}
           </span>
-          <span class="w-100">
+          <span class="w-100" style="flex-grow: 2;">
             <img style="width: 100%; height: auto;" :src="tovar.photo" />
           </span>
           <span :title="tovar.description" class="w-100" style="cursor:pointer">
@@ -168,7 +169,7 @@ function editok(event: any) {
             {{ tovar.price }} {{ tovar.valprice }}
           </span>
         </div>
-        <div v-show="props.stradmin == 'true'">
+        <div v-show="props.stradmin == true">
           <button class="rounded-sm border-2 border-black min-w-[30px]" @click="toogleVisEdit(category.cat_id)"> /ред </button>
           <button class="rounded-sm border-2 border-black min-w-[30px]" @click="catDelete(category.cat_id)"> /del </button>
         </div>

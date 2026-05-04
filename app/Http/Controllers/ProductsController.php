@@ -17,16 +17,19 @@ class ProductsController extends Controller
      */
     public function index_api()
     {
-        $products1 = Products::select('id','name','description','photo','price','valprice','category_id')->get();//paginate(10);
-        //echo(var_dump($products1));
+        $products1 = Products::get();//paginate(10);
         return $products1;
     }
 
     public function filterIndex_api(Request $request)
     {
         $cat_id = $request->input('cat_id');
-        $products1 = Products::where('cat_id', '=', $cat_id)->select('id','name','description','photo','price','valprice','category_id')->get();//->paginate(10);
-        return $products1->all();
+        if ($cat_id == null || $cat_id == 1) {
+            $products1 = Products::get();
+        } else {
+            $products1 = Products::where('category_id', '=', $cat_id)->get();//->paginate(10);
+        }
+        return $products1;
     }
 
     public function index()
@@ -40,7 +43,7 @@ class ProductsController extends Controller
     public function filterIndex(Request $request)
     {
         $cat_id = $request->input('cat_id');
-        $products1 = Products::where('cat_id', '=', $cat_id)->paginate(10);
+        $products1 = Products::where('category_id', '=', $cat_id)->paginate(10);
         return Inertia::render('viewsdata/Products', [
             'products' => $products1
         ]);
@@ -91,7 +94,7 @@ class ProductsController extends Controller
         }
 
         $products1 = Products::get();
-        return $products1->all();
+        return $products1;
     }
 
     public function store(Request $request)
@@ -184,7 +187,7 @@ class ProductsController extends Controller
             $product1->save();
         }
         $products1 = Products::get();
-        return $products1->all();
+        return $products1;
     }
 
     /**
@@ -204,6 +207,6 @@ class ProductsController extends Controller
         $product1->delete();
 
         $products1 = Products::get();
-        return $products1->all();
+        return $products1;
     }
 }
