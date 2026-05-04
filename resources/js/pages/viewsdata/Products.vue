@@ -168,10 +168,10 @@ function editok(event: any) {
           <span class="w-100">
             {{ tovar.price }} {{ tovar.valprice }}
           </span>
-        </div>
-        <div v-show="props.stradmin == true">
-          <button class="rounded-sm border-2 border-black min-w-[30px]" @click="toogleVisEdit(category.cat_id)"> /ред </button>
+          <span v-show="props.stradmin == true">
+            <button class="rounded-sm border-2 border-black min-w-[30px]" @click="toogleVisEdit(category.cat_id)"> /ред </button>
           <button class="rounded-sm border-2 border-black min-w-[30px]" @click="catDelete(category.cat_id)"> /del </button>
+          </span>
         </div>
       </td> 
     </tr>
