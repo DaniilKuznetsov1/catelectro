@@ -91,7 +91,7 @@ const submit = () => {
           <Input id="photo" type="file" required tabindex="1"  autocomplete="" accept="image/*" @change="fileUpload" />
           <div v-if="imageUrl" class="preview">
             <img :src="imageUrl" alt="Preview" style="max-width: 200px; max-height: 200px;" />
-            <button @click="fileRemove">Удалить</button>
+            <button class="border-2 border-gray" @click="fileRemove">Удалить</button>
           </div>
         </div>
         <div class="flex">

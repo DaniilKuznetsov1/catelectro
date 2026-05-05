@@ -17,7 +17,7 @@ const page_no = ref(1);
 const links = ref([]);
 
 const currentCategory = ref({cat_id: 0, catname: '', catdescription: ''});
-const currentProduct = ref({name: '', description: '', photo: '', price: 0, valprice:'р', category_id: 0});
+const currentProduct = ref({id: 0, name: '', description: '', photo: '', price: 0, valprice:'р', category_id: 0});
 
 const visCreate = ref(0);
 const visEdit = ref(0);
@@ -162,6 +162,42 @@ function toogleVisCreate() {
   }
 }
 
+function toggleVisEdit(id:any) {
+  let obj = {};
+  if (visEdit.value == 0) {
+    visEdit.value = 1;
+    if (products != undefined) {
+      obj = products.value.find((item:any) => {
+        if (item.id == id) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+      //{name: '', description: '', photo: '', price: 0, valprice:'р', category_id: 0}
+      console.log('toggleVisEdit ',id);
+      currentProduct.value.id = id;
+      currentProduct.value.name = obj.name;
+      currentProduct.value.description = obj.description;
+      currentProduct.value.photo = obj.photo;
+      currentProduct.value.price = obj.price;
+      currentProduct.value.valprice = obj.valprice;
+      currentProduct.value.category_id = obj.category_id;
+    }
+  } else {
+    visEdit.value = 0;
+    currentProduct.value.id = 0;
+  }
+}
+
+function getBorderColorBt(curid, idarr) {
+  if (curid == idarr) {
+    return "border-blue-500";
+  } else {
+    return "border-black";
+  }
+}
+
 function createok(event: any) {
   visCreate.value = 0;
   console.log('create event');
@@ -176,6 +212,37 @@ function editok(event: any) {
   console.log(event);
   let str = window.document.location.origin;
   window.location.href = str+'/dashboard';
+}
+
+async function tovDelete(id: any) {
+  let obj = categories.value.find((item:any) => {
+  if (item.cat_id == id) {
+      return true;
+    } else {
+      return false;
+    }
+  });
+  let str = window.document.location.origin;
+  let csrf = window.document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+  try {
+    const response = await fetch(str+'/productsa/'+id, {
+            headers: { "Content-Type": "application/json", 'X-CSRF-TOKEN':  csrf},
+            credentials: "include",
+            method: 'DELETE',
+          });
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    //console.log(data);
+    console.log(data);
+    products.value = data.data;
+    links.value = data.links;
+    runTovarTable();
+
+  } catch (error) {
+    console.error('Сетевая ошибка:', error);
+  }
 }
 
 </script>
@@ -216,8 +283,8 @@ function editok(event: any) {
             {{ tovar.price }} {{ tovar.valprice }}
           </span>
           <span v-show="props.stradmin == true">
-            <button class="rounded-sm border-2 border-black min-w-[30px]" @click="toogleVisEdit(category.cat_id)"> /ред </button>
-            <button class="rounded-sm border-2 border-black min-w-[30px]" @click="catDelete(category.cat_id)"> /del </button>
+            <button class="rounded-sm border-2 min-w-[30px]" :class="getBorderColorBt(currentProduct.id, tovar.id)" @click="toggleVisEdit(tovar.id)"> /ред </button>
+            <button class="rounded-sm border-2 min-w-[30px]" :class="getBorderColorBt(currentProduct.id, tovar.id)" @click="tovDelete(tovar.id)"> /del </button>
           </span>
         </div>
       </td> 
@@ -235,7 +302,7 @@ function editok(event: any) {
     <span class="flex items-center justify-center w-[calc(50%-5px)]" v-show="visCreate == 1">
       <create-product :categories="categories" @resdatacreatetov="createok"></create-product></span>
     <span class="flex items-center justify-center w-[calc(50%-5px)]" v-show="visEdit == 1">
-      <edit-product :category="currentCategory" :visible="visEdit == 1"  @resdataedittov="editok"></edit-product></span>
+      <edit-product :categories="categories" :tovar="currentProduct" :visible="visEdit == 1"  @resdataedittov="editok"></edit-product></span>
     <span class="flex items-center justify-center w-[calc(50%-5px)]" v-show="visCreate == 0 && visEdit == 0"></span>
   </div>
 </template>

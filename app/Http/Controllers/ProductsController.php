@@ -159,11 +159,11 @@ class ProductsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Products $products)
+    public function update(Request $request, Int $id)
     {
         $ret = $this->testReqCreate($request);
         if ($ret == 3) {
-            $product1 = Products::findOrFail($products->id);
+            $product1 = Products::findOrFail($id);
             $product1->name = $request->input('name');
             $product1->description = $request->input('description');
             $product1->photo = $request->input('photo');
@@ -190,7 +190,7 @@ class ProductsController extends Controller
             $product1->category_id = $request->input('category_id');
             $product1->save();
         }
-        $products1 = Products::get();
+        $products1 = Products::orderBy('id')->paginate(10)->toJson();
         return $products1;
     }
 
@@ -210,7 +210,7 @@ class ProductsController extends Controller
         $product1 = Products::findOrFail($id);
         $product1->delete();
 
-        $products1 = Products::get();
+        $products1 = Products::orderBy('id')->paginate(10)->toJson();
         return $products1;
     }
 }

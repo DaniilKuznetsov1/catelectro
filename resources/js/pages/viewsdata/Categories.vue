@@ -69,6 +69,14 @@ function toogleVisEdit(id:any) {
   }
 }
 
+function getBorderColorBt(curid, idarr) {
+  if (curid == idarr) {
+    return "border-blue-500";
+  } else {
+    return "border-black";
+  }
+}
+
 async function catDelete(id: any) {
   let obj = categories.value.find((item:any) => {
   if (item.cat_id == id) {
@@ -135,8 +143,8 @@ function testUrl2() {
     <tr v-for="category in categories">
       <td class="border-2 border-black">{{ category.catname }}</td> <td class="border-2 border-black">{{ category.catdescription }}</td> 
       <td class="border-2 border-black">
-        <button class="rounded-sm border-2 border-black min-w-[30px]" @click="toogleVisEdit(category.cat_id)"> /ред </button>
-        <button class="rounded-sm border-2 border-black min-w-[30px]" @click="catDelete(category.cat_id)"> /del </button>
+        <button class="rounded-sm border-2 min-w-[30px]" :class="getBorderColorBt(currentCategory.cat_id, category.cat_id)" @click="toogleVisEdit(category.cat_id)"> /ред </button>
+        <button class="rounded-sm border-2 min-w-[30px]" :class="getBorderColorBt(currentCategory.cat_id, category.cat_id)" @click="catDelete(category.cat_id)"> /del </button>
       </td>
     </tr>
   </table>

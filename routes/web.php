@@ -18,7 +18,7 @@ require __DIR__.'/auth.php';
 require __DIR__.'/api.php';
 
 Route::resource('products', ProductsController::class)->only([
-    'index', 'filterIndex', 'create', 'store', 'edit', 'update', 'destroy'
+    'index', 'filterIndex', 'create', 'store', 'edit', 'destroy'
 ]);
 
 Route::resource('categorys', CategorysController::class)->only([
@@ -26,3 +26,5 @@ Route::resource('categorys', CategorysController::class)->only([
 ]);
 
 Route::put('/categorys/update/{category}', [CategorysController::class, 'update'])->name('categorys.update');
+
+Route::post('/products/update/{tovar}', [ProductsController::class, 'update'])->name('products.update');
